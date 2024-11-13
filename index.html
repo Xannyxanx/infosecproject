@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Computer Inventory Management</title>
+        <link rel="stylesheet" href="login.css">
+    </head>
+    <body>
+        <div class="login-container">
+            <h1 class="login-title">Computer Inventory System</h1>
+            <form class="login-form" onsubmit="event.preventDefault(); loginbutton();">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+    
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+    
+                <button type="submit">Log In</button>
+            </form>
+        </div>
+        <script>
+            function loginbutton() {
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                const admin = "admin"
+                const adminPass = "pass123"
+                const user = "user";
+                const pass = "123";
+                const logs ={ 
+                    username: username,
+                    success: username === user && password === pass || username === admin && password === adminPass,
+                    timestamp: new Date().toISOString()
+                };
+                let logsInfo = JSON.parse(localStorage.getItem('loginLogs')) || [];
+                logsInfo.push(logs);
+                console.log("Updated logs:", logsInfo);
+
+
+                localStorage.setItem('loginLogs', JSON.stringify(logsInfo));
+                if (username === "user" && password === "123") {
+                window.location.href = "inventory.html";
+            } 
+            else if (username === "admin" && password === "pass123") {
+                    window.location.href = "logs.html";
+            }
+            else {
+                alert("Invalid username and password");
+            }
+        }
+        </script>       
+    </body>
+    </html>
+</html>

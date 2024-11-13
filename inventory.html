@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+
+<body>
+<br>
+    <div class="sidebar" id="sidebar">
+<ul>
+    <li><a href="#" class="active"><span class="icon">&#128187;</span> Units</a></li>
+    <li><a href="#"><span class="icon">&#128101;</span> Persons</a></li>
+    <li><a href="#"><span class="icon">&#128196;</span> Reports</a></li>
+    <li><a href="#"><span class="icon">&#128100;</span> Settings</a></li>
+</ul>
+</div>
+<div class="header">
+    <button class="menu-btn" onclick="toggleSidebar()">&#9776;</button>
+    <h1 class="app-title">Computer Inventory Management</h1>
+    <button type="submit" id="logout" style="background-color: rgb(168, 29, 29);" onclick="logout()">Logout</a></button>
+    </div>
+
+
+<div class="unitsTable">
+    <div id="iconsText">
+<h4>Units</h4>
+            <div class="header-icons">
+            <button class="header-icon" onclick="download()">&#8595;</button> 
+            <button class="search-icon"><img src="https://img.icons8.com/ios-filled/50/000000/search.png" alt="Search Icon"></button> 
+            <button class="header-icon">&#8635;</button> <!-- Refresh Icon -->
+            <button class="header-icon">+</button> <!-- Plus Icon -->
+        </div>
+        </div>
+<table>
+    <thead>
+        <tr>
+            <th>Status</th>
+            <th>Serial</th>
+            <th>Type</th>
+            <th>Name</th>
+            <th>Assigned</th>
+            <th>From</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="status taken">Taken</span></td>
+            <td>PC-00001</td>
+            <td>Computer</td>
+            <td>Dell X2</td>
+            <td>James Weid</td>
+            <td>12 March 2022</td>
+        </tr>
+        <tr>
+            <td><span class="status taken">Taken</span></td>
+            <td>CPU-00001</td>
+            <td>Processor</td>
+            <td>I5-3200</td>
+            <td>Burnok Palengkero</td>
+            <td>March 13 2024</td>
+        </tr>
+        <tr>
+            <td><span class="status deprecated">Deprecated</span></td>
+            <td>SSD-04412</td>
+            <td>SSD</td>
+            <td>RAMSTA</td>
+            <td></td>
+            <td>May 3 2024</td>
+        </tr>
+        <tr>
+            <td><span class="status deprecated">Deprecated</span></td>
+            <td>RAM-01231</td>
+            <td>RAM</td>
+            <td>Transcend</td>
+            <td></td>
+            <td>May 3 2024</td>
+        </tr>
+        <tr>
+            <td><span class="status taken">Taken</span></td>
+            <td>HDD-02215</td>
+            <td>Hard Disk</td>
+            <td>Seagate</td>
+            <td>Kendrick Lamar</td>
+            <td>May 4 2024</td>
+        </tr>
+        <tr>
+            <td><span class="status deprecated">Deprecated</span></td>
+            <td>PSU-04521</td>
+            <td>Power Supply</td>
+            <td>Gigabye</td>
+            <td></td>
+            <td>June 2 2024</td>
+        </tr>
+        <tr>
+            <td><span class="status taken">Taken</span></td>
+            <td>PSU-02521</td>
+            <td>Power Supply</td>
+            <td>RAMSTA</td>
+            <td>Jb Sucal</td>
+            <td>June 6 2024</td>
+        </tr>
+        <tr>
+            <td><span class="status taken">Taken</span></td>
+            <td>M-21521</td>
+            <td>Mouse</td>
+            <td>Rakk</td>
+            <td>John Wick</td>
+            <td>June 9 2024</td>
+        </tr>
+        <tr>
+            <td><span class="status taken">Taken</span></td>
+            <td>MKB-02112</td>
+            <td>Keyboard</td>
+            <td>Langtu</td>
+            <td>Travis Scott</td>
+            <td>July 1 2024</td>
+        </tr>
+        <tr>
+            <td><span class="status deprecated">Deprecated</span></td>
+            <td>M0N-02132</td>
+            <td>Monitor</td>
+            <td>Dell</td>
+            <td></td>
+            <td>July 8 2024</td>
+        </tr>
+        <tr>
+            <td><span class="status taken">Taken</span></td>
+            <td>G-01231</td>
+            <td>Graphic Card</td>
+            <td>Nvidia GT 730</td>
+            <td>Junji Ito</td>
+            <td>July 10 2024</td>
+        </tr>
+        <tr>
+            <td><span class="status deprecated">Deprecated</span></td>
+            <td>CPU-01234</td>
+            <td>Processor</td>
+            <td>AMD Z10</td>
+            <td></td>
+            <td>August 3 2024</td>
+        </tr>
+        <tr>
+            <td><span class="status deprecated">Deprecated</span></td>
+            <td>M0N-02132</td>
+            <td>Monitor</td>
+            <td>Dell</td>
+            <td></td>
+            <td>12 March 2022</td>
+        </tr>
+    </tbody>
+</table>
+</div>
+<script>
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.toggle('active');
+    }
+
+    function logout() {
+    window.location.href = "index.html";
+}
+
+function download() {
+    const table = document.querySelector("table");
+    
+    let csvContent = "";
+    const rows = table.querySelectorAll("tr");
+
+    rows.forEach(row => {
+        const cells = row.querySelectorAll("th, td");
+        const rowData = Array.from(cells).map(cell => cell.innerText).join(",");
+        csvContent += rowData + "\n"; 
+    });
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "units_table.csv";
+    
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+</script>
+
+</body>
+</html>

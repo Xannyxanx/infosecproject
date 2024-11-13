@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Logs</title>
+    <link rel="stylesheet" href="logs.css">
+</head>
+<body>
+    <header>
+        <h1 style="text-align: center;">Computer Inventory Management <br>Login and Monitoring</h1>
+        <h5 style="text-align: center;">Monitor your System's Login Attempts.</h5>
+        <button id="logout" onclick="logout()">Logout</button>
+    </header>
+
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search by Username" onkeyup="filterLogs()">
+    </div>
+
+    <div class="table-wrapper">
+        <table class="fl-table">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Attempts</th>
+                    <th>Timestamp</th>
+                </tr>
+            </thead>
+            <tbody id="tableLogs">
+            </tbody>
+        </table>
+    </div>
+    <div class="summary-info">
+        <p>Total Attempts: <span id="totalAttempts">0</span></p>
+        <p>Successful Logins: <span id="successCount">0</span></p>
+        <p>Failed Logins: <span id="failCount">0</span></p>
+    </div>
+
+    <button id="download" style="background-color: rgb(59, 157, 243);" onclick="downloadLogs()">Download Logs as CSV</button>
+    <button id="clear" style="background-color: rgb(168, 32, 32);" onclick="clearLogs()">Clear Logs</button>
+    <script>
+        const logs = JSON.parse(localStorage.getItem('loginLogs')) || [];
+        const tableLogs = document.getElementById('tableLogs');
+        
+        if (logs.length === 0) {
+            const noLogs = document.createElement('tr');
+            noLogs.innerHTML = `<td colspan="3">No Login Attempts Found.</td>`;
+            tableLogs.appendChild(noLogs);
+        } else {
+            logs.forEach(log => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${log.username}</td>
+                    <td>${log.success ? 'success' : 'failed'}</td>
+                    <td>${log.timestamp}</td>
+                `;
+                tableLogs.appendChild(row);
+            });
+        }
+        
+        document.getElementById('totalAttempts').innerText = logs.length;
+        document.getElementById('successCount').innerText = logs.filter(log => log.success).length;
+        document.getElementById('failCount').innerText = logs.filter(log => !log.success).length;
+
+        function filterLogs() {
+    const filter = document.getElementById('searchInput').value.toUpperCase();
+    const rows = tableLogs.getElementsByTagName('tr');
+
+    for (let i = 0; i < rows.length; i++) {
+        const usernameCell = rows[i].getElementsByTagName('td')[0];
+        if (usernameCell) {
+            const usernameText = usernameCell.textContent || usernameCell.innerText;
+            rows[i].style.display = usernameText.toUpperCase().indexOf(filter) > -1 ? '' : 'none';
+        }
+    }
+}
+
+function clearLogs() {
+    const logs = JSON.parse(localStorage.getItem('loginLogs'));
+
+    if (logs && logs.length > 0) {
+       
+        localStorage.removeItem('loginLogs');
+
+        
+        const tableLogs = document.getElementById('tableLogs');
+        tableLogs.innerHTML = '';
+
+    
+        const noLogs = document.createElement('tr');
+        noLogs.innerHTML = `<td colspan="3">No Login Attempts Found.</td>`;
+        tableLogs.appendChild(noLogs);
+
+        alert("Logs cleared successfully.");
+    } else {
+        alert("No logs to clear.");
+    }
+}
+        
+
+        function downloadLogs() {
+    let csvContent = "data:text/csv;charset=utf-8,Username,Attempts,Timestamp\n";
+    logs.forEach(log => {
+        const row = `${log.username},${log.success ? 'success' : 'failed'},${log.timestamp}`;
+        csvContent += row + "\n";
+    });
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "login_logs.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+function logout() {
+    window.location.href = "index.html";
+}
+    </script>
+</body>
+</html>
